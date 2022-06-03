@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -45,5 +46,12 @@ export class ContactController {
     const response = await this.contactService.update(contact);
     console.log("response", response)
     return this.contactMapper.mapEntityToDto(response);
+  }
+
+  @Delete(':id')
+  async deleteContact(@Param('id', ParseIntPipe) id: number): Promise<ContactDto[]> {
+    const contacts = await this.contactService.delete(id);
+    console.log(contacts);
+    return contacts.map((contact) => this.contactMapper.mapEntityToDto(contact));
   }
 }

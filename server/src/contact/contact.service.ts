@@ -31,4 +31,9 @@ export class ContactService {
       where: { id: contact.id },
     });
   }
+
+  async delete(id: number): Promise<Contact[]> {
+    await this.contactRepository.delete(id);
+    return this.contactRepository.find();
+  }
 }

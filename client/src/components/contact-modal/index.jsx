@@ -49,6 +49,9 @@ const ContactModal = () => {
       updateContact(data).then(
         (response) => {
           modalContext.closeModal();
+          setFName("");
+          setLName("");
+          setEmail("");
           reset();
           setFormDisabled(false);
         },
@@ -60,6 +63,9 @@ const ContactModal = () => {
       createContact(data).then(
         (response) => {
           modalContext.closeModal();
+          setFName("");
+          setLName("");
+          setEmail("");
           reset();
           setFormDisabled(false);
         },

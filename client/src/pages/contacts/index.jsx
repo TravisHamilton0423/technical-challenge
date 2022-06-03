@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react';
-import { getAllContacts } from '../../services/contact.service';
+import { getAllContacts, deleteContact } from '../../services/contact.service';
 import ContactModal from '../../components/contact-modal';
 import ModalContext from '../../contexts/modal-context';
 import './contacts.scss';
@@ -10,7 +10,7 @@ const ContactsPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentId, setCurrentId] = useState(null);
 
-  useEffect(() => {
+  function getTable() {
     getAllContacts().then((response) => {
       if (response.data && response.data.length) {
         const headers = (
@@ -36,17 +36,29 @@ const ContactsPage = () => {
               <td key="emailAddress">{row.emailAddress}</td>
               <td key="phoneTypes">{row.phoneNumbers.map((p) => p.phoneType).join(', ')}</td>
               <td key="edit" onClick={() => onEdit(row.id)}>Edit</td>
-              <td key="delete">Delete</td>
+              <td key="delete" onClick={() => onDelete(row.id)}>Delete</td>
             </tr>
           ));
         setTableRows(rows);
       }
+      else {
+        setTableHeaders([]);
+        setTableRows([]);
+      }
     });
+  }
+
+  useEffect(() => {
+    getTable();
   }, [showModal]);
 
   const onEdit = (id) => {
     setCurrentId(id);
     setShowModal(true);
+  }
+
+  const onDelete = (id) => {
+    deleteContact(id).then(() => getTable());
   }
 
   const onCloseModal = () => {
