@@ -1,7 +1,10 @@
 import { ArrayUnique, IsEmail, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
-import { PhoneCreateDto } from '../../phone/dtos/phone-create.dto';
+import { PhoneUpdateDto } from '../../phone/dtos/phone-update.dto';
 
-export class ContactCreateDto {
+export class ContactUpdateDto {
+  @IsNotEmpty()
+  id: number
+
   @IsNotEmpty()
   firstName: string;
 
@@ -14,5 +17,5 @@ export class ContactCreateDto {
   @IsOptional()
   @ValidateNested()
   @ArrayUnique(phoneNumber => phoneNumber.phoneType)
-  phoneNumbers: PhoneCreateDto[]
+  phoneNumbers: PhoneUpdateDto[]
 }

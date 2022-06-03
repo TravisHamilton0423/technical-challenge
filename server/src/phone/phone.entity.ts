@@ -13,6 +13,6 @@ export class Phone {
   @Column()
   phoneType: PhoneType;
 
-  @ManyToOne(() => Contact, (contact) => contact.phoneNumbers, { onDelete: "CASCADE" })
+  @ManyToOne(() => Contact, (contact) => contact.phoneNumbers, { onDelete: "CASCADE", onUpdate:'CASCADE' })
   contact?: Contact;
 }

@@ -1,4 +1,5 @@
 import { ContactCreateDto } from './dtos/contact-create.dto';
+import { ContactUpdateDto } from './dtos/contact-update.dto';
 import { Injectable } from '@nestjs/common';
 import { Contact } from './contact.entity';
 import { ContactDto } from './dtos/contact.dto';
@@ -27,6 +28,16 @@ export class ContactMapper {
       lastName: dto.lastName,
       emailAddress: dto.emailAddress,
       phoneNumbers: dto.phoneNumbers?.map(phoneNumber => this.phoneMapper.mapCreatePhoneDtoToEntity(phoneNumber))
+    };
+  }
+
+  mapUpdateContactDtoToEntity(dto: ContactUpdateDto): Contact {
+    return {
+      id: dto.id,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      emailAddress: dto.emailAddress,
+      phoneNumbers: dto.phoneNumbers?.map(phoneNumber => this.phoneMapper.mapUpdatePhoneDtoToEntity(phoneNumber))
     };
   }
 }

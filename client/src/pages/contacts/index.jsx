@@ -8,6 +8,7 @@ const ContactsPage = () => {
   const [tableHeaders, setTableHeaders] = useState([]);
   const [tableRows, setTableRows] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [currentId, setCurrentId] = useState(null);
 
   useEffect(() => {
     getAllContacts().then((response) => {
@@ -19,6 +20,8 @@ const ContactsPage = () => {
             <th key="firstName">First Name</th>
             <th key="emailAddress">Email Address</th>
             <th key="phoneTypes">Phone Types</th>
+            <th key="edit">Edit</th>
+            <th key="delete">Delete</th>
           </tr>
         );
         setTableHeaders(headers);
@@ -32,12 +35,24 @@ const ContactsPage = () => {
               <td key="firstName">{row.firstName}</td>
               <td key="emailAddress">{row.emailAddress}</td>
               <td key="phoneTypes">{row.phoneNumbers.map((p) => p.phoneType).join(', ')}</td>
+              <td key="edit" onClick={() => onEdit(row.id)}>Edit</td>
+              <td key="delete">Delete</td>
             </tr>
           ));
         setTableRows(rows);
       }
     });
   }, [showModal]);
+
+  const onEdit = (id) => {
+    setCurrentId(id);
+    setShowModal(true);
+  }
+
+  const onCloseModal = () => {
+    setShowModal(false);
+    setCurrentId(null);
+  }
 
   return (
     <div className="contacts-page">
@@ -56,7 +71,7 @@ const ContactsPage = () => {
           </table>
         </div>
       </div>
-      <ModalContext.Provider value={{ showModal: showModal, closeModal: () => setShowModal(false) }}>
+      <ModalContext.Provider value={{ showModal: showModal, closeModal: onCloseModal, currentId: currentId }}>
         <ContactModal />
       </ModalContext.Provider>
     </div>

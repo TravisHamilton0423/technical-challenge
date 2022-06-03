@@ -27,6 +27,8 @@ export class ContactService {
 
   async update(contact: Contact): Promise<Contact> {
     const result = await this.contactRepository.save(contact);
-    return this.contactRepository.findOne({ where: { id: contact.id } });
+    return this.contactRepository.findOne({
+      where: { id: contact.id },
+    });
   }
 }
