@@ -13,6 +13,7 @@ const ContactsPage = () => {
   function getTable() {
     getAllContacts().then((response) => {
       if (response.data && response.data.length) {
+        console.log(response.data)
         const headers = (
           <tr>
             <th key="id">Id</th>
