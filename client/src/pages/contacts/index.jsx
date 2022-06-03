@@ -83,9 +83,11 @@ const ContactsPage = () => {
           </table>
         </div>
       </div>
-      <ModalContext.Provider value={{ showModal: showModal, closeModal: onCloseModal, currentId: currentId }}>
-        <ContactModal />
-      </ModalContext.Provider>
+      {showModal &&
+        <ModalContext.Provider value={{ showModal: showModal, closeModal: onCloseModal, currentId: currentId }}>
+          <ContactModal />
+        </ModalContext.Provider>
+      }
     </div>
   );
 };

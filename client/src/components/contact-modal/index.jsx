@@ -7,9 +7,6 @@ import './contact-modal.scss';
 const ContactModal = () => {
   const modalContext = useContext(ModalContext);
   const [formDisabled, setFormDisabled] = useState(false);
-  const [fName, setFName] = useState("");
-  const [lName, setLName] = useState("");
-  const [email, setEmail] = useState("");
 
   const {
     control,
@@ -26,21 +23,9 @@ const ContactModal = () => {
 
   useEffect(() => {
     if(modalContext.currentId) {
-      getContactById(modalContext.currentId).then(contact => {
-        // reset()
-        const {data} = contact;
-        setFName(data.firstName);
-        setLName(data.lastName);
-        setEmail(data.emailAddress);
-
-        if(data.phoneNumbers.length > 0) {
-          reset({
-            phoneNumbers: data.phoneNumbers
-          })
-        }
-      });
+      getContactById(modalContext.currentId).then(contact => reset(contact.data));
     }
-  }, [modalContext.currentId])
+  }, [])
 
   const onValid = (data) => {
     setFormDisabled(true);
@@ -48,11 +33,8 @@ const ContactModal = () => {
       data.id = modalContext.currentId;
       updateContact(data).then(
         (response) => {
-          modalContext.closeModal();
-          setFName("");
-          setLName("");
-          setEmail("");
           reset();
+          modalContext.closeModal();
           setFormDisabled(false);
         },
         (errors) => {
@@ -62,11 +44,8 @@ const ContactModal = () => {
     } else {
       createContact(data).then(
         (response) => {
-          modalContext.closeModal();
-          setFName("");
-          setLName("");
-          setEmail("");
           reset();
+          modalContext.closeModal();
           setFormDisabled(false);
         },
         (errors) => {
@@ -93,21 +72,6 @@ const ContactModal = () => {
     }
   };
 
-  const onFName = (e) => {
-    e.preventDefault();
-    setFName(e.target.value);
-  }
-
-  const onLName = (e) => {
-    e.preventDefault();
-    setLName(e.target.value);
-  }
-
-  const onEmail = (e) => {
-    e.preventDefault();
-    setEmail(e.target.value);
-  }
-
   return (
     <div className={`modal ${modalContext.showModal ? 'is-active' : ''}`}>
       <div className="modal-background"></div>
@@ -124,8 +88,6 @@ const ContactModal = () => {
                 className={`input ${errors.firstName ? 'error' : ''}`}
                 type="text"
                 disabled={formDisabled}
-                value={fName}
-                onChange={onFName}
               />
             </div>
           </div>
@@ -140,8 +102,6 @@ const ContactModal = () => {
                 className={`input ${errors.lastName ? 'error' : ''}`}
                 type="text"
                 disabled={formDisabled}
-                value={lName}
-                onChange={onLName}
               />
             </div>
           </div>
@@ -156,8 +116,6 @@ const ContactModal = () => {
                 className={`input ${errors.emailAddress ? 'error' : ''}`}
                 type="text"
                 disabled={formDisabled}
-                value={email}
-                onChange={onEmail}
               />
             </div>
           </div>
